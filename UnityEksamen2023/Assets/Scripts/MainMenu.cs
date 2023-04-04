@@ -6,6 +6,12 @@ public class MainMenu : MonoBehaviour
 {
    public void PlayGame()
    {
-    SceneManager.LoadScene(SceneManager.GetActiveScene().buiildIndex +1);
+    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex +1);
+   }
+
+   public void ExitGame()
+   {
+    Debug.Log("You have exited the game :)");
+    Application.Quit();
    }
 }
