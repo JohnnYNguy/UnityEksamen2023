@@ -26,16 +26,21 @@ public class MusicController : MonoBehaviour
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        if (SceneManager.GetActiveScene().name == "OptionsMenu")
+        if (SceneManager.GetActiveScene().name == "OptionMenu")
         {
-            volumeSlider = GameObject.Find("SliderForMusicAdjsut").GetComponent<Slider>();
+            volumeSlider = GameObject.Find("VolumeSlider").GetComponent<Slider>();
             volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
         }
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name != "OptionsMenu")
+        if (scene.name == "OptionsMenu")
+        {
+            volumeSlider = GameObject.Find("VolumeSlider").GetComponent<Slider>();
+            volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
+        }
+        else
         {
             musicSource.Play();
         }
