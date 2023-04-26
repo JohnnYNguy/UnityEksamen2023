@@ -9,6 +9,8 @@ public class MusicController : MonoBehaviour
     public AudioSource musicSource;
     public float volumeSlider;
 
+    private Slider sliderComponent; // added variable to reference the Slider component
+
     void Awake()
     {
         if (instance == null)
@@ -26,21 +28,21 @@ public class MusicController : MonoBehaviour
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        if (SceneManager.GetActiveScene().name == "OptionsMenu")
+        if (SceneManager.GetActiveScene().name == "MainMenu")
         {
-            volumeSlider = GameObject.Find("SliderForMusicAdjust").GetComponent<Slider>();
-            volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
-            volumeSlider.value = musicSource.volume;
+            sliderComponent = GameObject.Find("Canvas/OptionsMenu/Slider").GetComponent<Slider>();
+            sliderComponent.onValueChanged.AddListener(OnVolumeChanged);
+            sliderComponent.value = volumeSlider; // setting the Slider value using the float variable
         }
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "OptionsMenu")
+        if (scene.name == "MainMenu")
         {
-            volumeSlider = GameObject.Find("SliderForMusicAdjust").GetComponent<Slider>();
-            volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
-            volumeSlider.value = musicSource.volume;
+            sliderComponent = GameObject.Find("Canvas/OptionsMenu/Slider").GetComponent<Slider>();
+            sliderComponent.onValueChanged.AddListener(OnVolumeChanged);
+            sliderComponent.value = volumeSlider; // setting the Slider value using the float variable
         }
         else
         {
@@ -50,6 +52,17 @@ public class MusicController : MonoBehaviour
 
     void OnVolumeChanged(float volume)
     {
-        musicSource.volume = volume;
+        Debug.Log("Volume changed to: " + volume);
+        volumeSlider = volume;
+        musicSource.volume = volumeSlider;
+    }
+
+    void OnDestroy()
+    {
+        if (sliderComponent != null)
+        {
+            sliderComponent.onValueChanged.RemoveListener(OnVolumeChanged);
+            volumeSlider = sliderComponent.value;
+        }
     }
 }
