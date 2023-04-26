@@ -7,7 +7,7 @@ public class MusicController : MonoBehaviour
     public static MusicController instance;
 
     public AudioSource musicSource;
-    public Slider volumeSlider;
+    public float volumeSlider;
 
     void Awake()
     {
@@ -26,10 +26,11 @@ public class MusicController : MonoBehaviour
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        if (SceneManager.GetActiveScene().name == "OptionMenu")
+        if (SceneManager.GetActiveScene().name == "OptionsMenu")
         {
-            volumeSlider = GameObject.Find("VolumeSlider").GetComponent<Slider>();
+            volumeSlider = GameObject.Find("SliderForMusicAdjust").GetComponent<Slider>();
             volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
+            volumeSlider.value = musicSource.volume;
         }
     }
 
@@ -37,8 +38,9 @@ public class MusicController : MonoBehaviour
     {
         if (scene.name == "OptionsMenu")
         {
-            volumeSlider = GameObject.Find("VolumeSlider").GetComponent<Slider>();
+            volumeSlider = GameObject.Find("SliderForMusicAdjust").GetComponent<Slider>();
             volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
+            volumeSlider.value = musicSource.volume;
         }
         else
         {
